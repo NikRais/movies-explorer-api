@@ -20,8 +20,8 @@ module.exports.signUp = celebrate({
 /* Валидация обновления информации профиля */
 module.exports.updateUserValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
     email: Joi.string().required().email(),
+    name: Joi.string().min(2).max(30).required(),
   }),
 });
 

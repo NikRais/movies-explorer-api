@@ -58,7 +58,7 @@ module.exports.login = async (req, res, next) => {
         sameSite: true,
         secure: true,
       });
-      return res.send({ token });
+      return res.send({ message: 'Токен сохранён' });
     }
     return res.status(serverResponse.OK_REQUEST).send('Авторизация завершена');
   } catch (err) {
@@ -66,7 +66,7 @@ module.exports.login = async (req, res, next) => {
   }
 };
 
-module.exports.logout = (req, res) => res.cookie('jwt', { expires: Date.now() }).send({ message: 'Совершён выход' });
+module.exports.logout = (req, res) => { res.cookie('jwt', { expires: Date.now() }).send({ message: 'Совершён выход' }); };
 
 module.exports.getCurrentUser = async (req, res, next) => {
   try {

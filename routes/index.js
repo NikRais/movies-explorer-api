@@ -20,7 +20,8 @@ router.post('/signout', logout);
 router.use(auth);
 router.use('/', movieRouter);
 router.use('/', userRouter);
-router.use('*', (req, res, next) => {
+
+router.use((req, res, next) => {
   next(new NotFoundError('Запрашиваемый адрес не найден'));
 });
 

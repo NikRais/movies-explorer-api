@@ -4,15 +4,10 @@ const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    minlength: [2, 'Имя пользователя должно содержать минимум 2 символа'],
-    maxlength: [30, 'Имя пользователя может содержать максимум 30 символов'],
-  },
   email: {
     type: String,
     validate: {
-      validator: (email) => isEmail(email),
+      validator: (v) => isEmail(v),
       message: 'Неправильно указан формат почты',
     },
     required: [true, 'Поле должно быть заполнено'],
@@ -23,9 +18,14 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Поле должно быть заполнено'],
     select: false,
   },
+  name: {
+    type: String,
+    minlength: [2, 'Имя пользователя должно содержать минимум 2 символа'],
+    maxlength: [30, 'Имя пользователя может содержать максимум 30 символов'],
+  },
 });
 
-userSchema.statics.findUserByCredentials = function findOneFunc(email, password) {
+userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password').then((user) => {
     /* Если пользователя не удалось найти, то отклоняем промис */
     if (!user) {

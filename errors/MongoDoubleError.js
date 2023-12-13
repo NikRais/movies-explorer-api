@@ -1,9 +1,9 @@
-const statusCodes = require('../utils/serverResponse');
+const serverResponse = require('../utils/serverResponse');
 
 class MongoDoubleConflict extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = statusCodes.CONFLICT;
+    this.statusCode = serverResponse.CONFLICT;
   }
 }
 

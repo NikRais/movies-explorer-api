@@ -5,7 +5,7 @@ const {
   PORT = 3000,
   NODE_ENV,
   JWT_SECRET,
-  MONGO_URL,
+  DB_URL,
 } = process.env;
 
 module.exports = {
@@ -13,6 +13,6 @@ module.exports = {
   NODE_ENV,
   JWT_SECRET,
   JWT_SECRET_DEV,
-  MONGO_URL,
+  DB_URL,
   MONGO_URL_DEV,
 };

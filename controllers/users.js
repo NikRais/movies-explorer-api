@@ -1,3 +1,4 @@
+const { ValidationError, CastError } = require('mongoose').Error;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -84,15 +85,26 @@ module.exports.getCurrentUser = async (req, res, next) => {
   }
 };
 
-module.exports.updateUser = async (req, res, next) => {
-  try {
-    const { name, email } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { name, email },
-      { new: true, runValidators: true },
-    );
-    return res.status(serverResponse.OK_REQUEST).send({
+module.exports.updateUser = (req, res, next) => {
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, email },
+    { new: true, runValidators: true },
+  )
+    .orFail(new NotFoundError('Пользователь по id не найден'))
+    .then((user) => res.status(serverResponse.OK_REQUEST).send(user))
+    .catch((err) => {
+      if (err instanceof ValidationError) {
+        next(new BadRequestError('Переданы некорректные данные'));
+      } else if (err instanceof CastError) {
+        next(new BadRequestError('id указан некорректно'));
+      } else {
+        next(err);
+      }
+    });
+};
+/* return res.status(serverResponse.OK_REQUEST).send({
       name: user.name,
       email: user.email,
     });
@@ -102,4 +114,4 @@ module.exports.updateUser = async (req, res, next) => {
     }
     return next(err);
   }
-};
+}; */

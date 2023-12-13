@@ -8,22 +8,14 @@ const router = require('./routes');
 const limiter = require('./utils/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
+const cors = require('./middlewares/corsHandler');
 
 const {
   PORT, NODE_ENV, DB_URL, MONGO_URL_DEV,
 } = require('./utils/devConstants');
 
 const app = express();
-app.use(cors({
-  origin: [
-    'http://diplom.nikrais.nomoredomainsmonster.ru',
-    'https://diplom.nikrais.nomoredomainsmonster.ru',
-    'http://localhost:3000',
-    'https://localhost:3000',
-  ],
-  credentials: true,
-}));
+app.use(cors);
 app.use(limiter);
 app.use(helmet());
 app.use(express.json());

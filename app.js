@@ -6,10 +6,9 @@ const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const router = require('./routes');
 const limiter = require('./utils/rateLimiter');
-const cors = require('./middlewares/cors');
-
-const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const {
   PORT, NODE_ENV, DB_URL, MONGO_URL_DEV,

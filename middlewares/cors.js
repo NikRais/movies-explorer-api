@@ -1,8 +1,6 @@
 const allowedCors = [
   'http://diplom.nikrais.nomoredomainsmonster.ru',
   'https://diplom.nikrais.nomoredomainsmonster.ru',
-  'http://127.0.0.1:3000',
-  'https://127.0.0.1:3000',
   'http://localhost:3000',
   'https://localhost:3000',
 ];

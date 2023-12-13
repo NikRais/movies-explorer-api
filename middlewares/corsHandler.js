@@ -3,9 +3,8 @@ const allowedCors = [
   'https://diplom.nikrais.nomoredomainsmonster.ru',
   'http://localhost:3000',
   'https://localhost:3000',
-  '*',
 ];
-
+/*
 const cors = (req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
@@ -22,5 +21,5 @@ const cors = (req, res, next) => {
   }
   return next();
 };
-
-module.exports = cors;
+*/
+module.exports = allowedCors;

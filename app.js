@@ -18,7 +18,11 @@ const {
 const app = express();
 app.use(cors({
   origin: [allowedCors],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 }));
 app.use(limiter);
 app.use(helmet());

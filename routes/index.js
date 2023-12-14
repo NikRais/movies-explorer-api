@@ -17,10 +17,9 @@ router.post('/signup', signUp, createUser);
 router.post('/signin', signIn, login);
 router.post('/signout', logout);
 
-router.use(auth);
-router.use('/', movieRouter);
-router.use('/', userRouter);
-router.use('*', (req, res, next) => {
+router.use('/movies', auth, movieRouter);
+router.use('/users', auth, userRouter);
+router.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Запрашиваемый адрес не найден'));
 });
 

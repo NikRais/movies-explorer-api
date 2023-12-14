@@ -1,4 +1,4 @@
-const allowedCors = [
+const corseAllowedOrigins = [
   'http://diplom.nikrais.nomoredomainsmonster.ru',
   'https://diplom.nikrais.nomoredomainsmonster.ru',
   'http://localhost:3000',
@@ -22,4 +22,4 @@ const cors = (req, res, next) => {
   return next();
 };
 */
-module.exports = allowedCors;
+module.exports = corseAllowedOrigins;

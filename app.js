@@ -9,7 +9,7 @@ const router = require('./routes');
 const limiter = require('./utils/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const allowedCors = require('./middlewares/corsHandler');
+const corseAllowedOrigins = require('./middlewares/corsHandler');
 
 const {
   PORT, NODE_ENV, DB_URL, MONGO_URL_DEV,
@@ -17,12 +17,9 @@ const {
 
 const app = express();
 app.use(cors({
-  origin: [allowedCors],
+  origin: corseAllowedOrigins,
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
 }));
 app.use(limiter);
 app.use(helmet());

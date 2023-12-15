@@ -6,14 +6,13 @@ const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const router = require('./routes');
-const limiter = require('./utils/rateLimiter');
+const rateLimit = require('./utils/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corseAllowedOrigins = require('./middlewares/corsHandler');
 
-const {
-  PORT, NODE_ENV, DB_URL, MONGO_URL_DEV,
-} = require('./utils/devConstants');
+const { NODE_ENV, PORT = 3000, DB_URL } = process.env;
+const { MONGO_URL_DEV } = require('./utils/devConstants');
 
 const app = express();
 app.use(cors({
@@ -21,7 +20,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
-app.use(limiter);
+app.use(rateLimit);
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
@@ -35,7 +34,7 @@ app.use(errorHandler);
 
 async function init() {
   await mongoose.connect(NODE_ENV === 'production' ? DB_URL : MONGO_URL_DEV);
-  await app.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(`App listening at port ${PORT}`);
   });
 }

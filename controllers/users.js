@@ -1,5 +1,5 @@
 const { ValidationError, CastError } = require('mongoose').Error;
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const generateTokenJwt = require('../utils/generateJwt');
 const User = require('../models/user');
 
@@ -19,7 +19,6 @@ const { NODE_ENV, JWT_SECRET, JWT_SECRET_DEV } = require('../utils/devConstants'
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
-  // хешируем пароль
   bcrypt.hash(password, salt)
     .then((hash) => User.create({
       name, email, password: hash,
@@ -116,15 +115,17 @@ module.exports.login = async (req, res, next) => {
 };
 */
 
-module.exports.logout = (req, res) => { res.clearCookie('jwt').send({ message: 'Совершён выход' }); };
+module.exports.logout = (req, res) => {
+  res.clearCookie('jwt').send({ message: 'Совершён выход' });
+};
 
 module.exports.getCurrentUser = (req, res, next) => {
   const userData = req.user._id;
   User.findById(userData)
     .orFail(new NotFoundError('Пользователь по id не найден'))
     .then((user) => res.status(serverResponse.OK_REQUEST).send(user))
-    .catch((error) => {
-      next(error);
+    .catch((err) => {
+      next(err);
     });
 };
 
@@ -147,12 +148,11 @@ module.exports.getCurrentUser = async (req, res, next) => {
 */
 
 module.exports.updateUser = (req, res, next) => {
-  const { name, email } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    { name, email },
-    { new: true, runValidators: true },
-  )
+  const { email, name } = req.body;
+  User.findByIdAndUpdate(req.user._id, { email, name }, {
+    new: true,
+    runValidators: true,
+  })
     .orFail(new NotFoundError('Пользователь по id не найден'))
     .then((user) => res.status(serverResponse.OK_REQUEST).send(user))
     .catch((err) => {

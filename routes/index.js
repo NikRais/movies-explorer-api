@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const userRouter = require('./users');
 const movieRouter = require('./movies');
-const { createUser, login, logout } = require('../controllers/users');
+const authRouter = require('./auth');
+const { logout } = require('../controllers/users');
 const auth = require('../middlewares/auth');
-const { signUp, signIn } = require('../middlewares/validations');
 
 const NotFoundError = require('../errors/NotFoundError');
 
@@ -13,9 +13,8 @@ router.get('/crash-test', () => {
   }, 0);
 });
 
-router.post('/signup', signUp, createUser);
-router.post('/signin', signIn, login);
-router.post('/signout', logout);
+router.use('/', authRouter);
+router.get('/signout', auth, logout);
 
 router.use('/movies', auth, movieRouter);
 router.use('/users', auth, userRouter);
